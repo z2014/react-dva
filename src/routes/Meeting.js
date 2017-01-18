@@ -4,17 +4,20 @@ import { message } from 'antd';
 import Layout from '../components/Common/Layout.js';
 import TabPage from '../components/TabPage.js';
 import MeetingPanel from '../components/meeting/MeetingPanel.js';
+import BuildMeeting from '../components/meeting/BuildMeeting.js';
 
 class Meeting extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      meeting:props.data,
+      meeting:props.meeting.data,
       currentNav:2
     }
   }
   handlechange = (key) => {
+    console.log(key);
   	if (key == 'todo') {
+      console.log('hah');
   	  this.props.dispatch({
   		  type:'meeting/fetchTodo'
   	  })
@@ -36,44 +39,20 @@ class Meeting extends Component {
     });
   }
   render() {
-    console.log('data',this.state.meeting);
-    const data = [
-      {
-        time:'2016',
-        meeting:'第一届全员大会',
-        role:'全员大会',
-        status:'未召开',
-        key:'1'
-      },
-      {
-        time:'2016',
-        meeting:'第二届全员大会',
-        role:'全员大会',
-        status:'未召开',
-        key:'2'
-      },
-      {
-        time:'2016',
-        meeting:'第三届全员大会',
-        role:'全员大会',
-        status:'已召开',
-        key:'3'
-      }
-    ];
   	const tabItems = [
       {
       	text:'我的会议',
       	key:'done',
-      	content:<MeetingPanel data={data} dispatch={this.props.dispatch}/>
+      	content:<MeetingPanel data={this.state.meeting} dispatch={this.props.dispatch}/>
       },
       {
       	text:'发起会议',
       	key:'todo',
-      	content:<p>11</p>
+      	content:<BuildMeeting dispatch={this.props.dispatch}/>
       }
   	];
     return (
-      <Layout currentNav={'2'}>
+      <Layout currentNav={this.props.meeting.currentNav}>
         <TabPage items={tabItems} defaultActiveKey={'done'} onchange={this.handlechange}/>
       </Layout>)
   }
@@ -81,4 +60,4 @@ class Meeting extends Component {
 function mapStateToProps(meeting) {
   return {...meeting};
 }
-export default Meeting;
+export default connect(mapStateToProps)(Meeting);

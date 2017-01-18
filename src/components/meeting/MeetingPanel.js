@@ -14,36 +14,36 @@ class MeetingPanel extends Component {
     this.closeTable = this.closeTable.bind(this);
     this.columns = [
       {
-    title:'日期',
-    dataIndex:'time',
-    key:'time'
-  },
-  {
-    title:'会议',
-    dataIndex:'meeting',
-    key:'meeting'
-  },
-  {
-    title:'分类',
-    dataIndex:'role',
-    key:'role'
-  },
-  {
-    title:'状态',
-    dataIndex:'status',
-    key:'status',
-    filters:[
-      {
-        text:'未召开',
-        value:'未召开'
+        title:'日期',
+        dataIndex:'date',
+        key:'time'
       },
       {
-        text:'已召开',
-        value:'已召开'
-      }
-    ],
-    onFilter:(value,record) => record.status.indexOf(value) === 0
-  },
+        title:'会议',
+        dataIndex:'meeting',
+        key:'meeting'
+      },
+      {
+        title:'分类',
+        dataIndex:'role',
+        key:'role'
+      },
+      {
+        title:'状态',
+        dataIndex:'status',
+        key:'status',
+        filters:[
+          {
+            text:'未召开',
+            value:'未召开'
+          },
+          {
+            text:'已召开',
+            value:'已召开'
+          }
+        ],
+        onFilter:(value,record) => record.status.indexOf(value) === 0
+      },
       {
         title:'操作',
         dataIndex:'operate',
@@ -74,6 +74,9 @@ class MeetingPanel extends Component {
   //查看table
   seeMeeting(record) {
     return () => {
+      this.setState({
+        record:record
+      });
       //保证页面上只显示一个table
       if (!this.state.isVisibleRead) {
         this.setState({
@@ -82,11 +85,6 @@ class MeetingPanel extends Component {
           record:record
         })
       }
-      //获取table信息
-      this.props.dispatch({
-        type:'meeting/queryMeeting',
-        payload:{key:record.key}
-      })
     }
   }
   closeTable() {
@@ -121,7 +119,7 @@ class MeetingPanel extends Component {
         {
           this.state.isVisibleRead
             &&
-          <ReadOnlyMeeting data={text} closeTable={this.closeTable}/>
+          <ReadOnlyMeeting data={this.state.record} closeTable={this.closeTable}/>
         }
       </div>
   	)

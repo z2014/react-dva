@@ -17,7 +17,7 @@ export default class ReadOnlyMeeting extends Component {
         </div>
         <div className={styles.div}>
           <span className={styles.span}>会议名称</span>
-          <div style={inline}>{this.props.data.name}</div>
+          <div style={inline}>{this.props.data.meeting}</div>
         </div>
         <div className={styles.div}>
           <span className={styles.span}>会议分类</span>

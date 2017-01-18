@@ -55,6 +55,7 @@ class Member extends Component {
         content: <MemberPanel role={'recruit'} data={this.props.member.recruit}/>
       }
     ];
+    // console.log('member',this.props.member.data)
     return (
       <Layout currentNav={this.props.member.currentNav}>
         <TabPage items={tabItems} defaultActiveKey={'member'} onChange={this.handleTabChange} />

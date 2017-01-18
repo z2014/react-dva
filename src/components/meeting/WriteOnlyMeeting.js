@@ -1,5 +1,5 @@
 import React,{ Component,PropTypes } from 'react';
-import { Input,Button,DatePicker,Select,TimePicker } from 'antd';
+import { Input,Button,DatePicker,Select,TimePicker,message,Popconfirm } from 'antd';
 import styles from './WriteOnlyMeeting.css';
 const Option = Select.Option;
 const format = 'HH:mm';
@@ -10,7 +10,8 @@ export default class WriteOnlyMeeting extends Component {
       key:this.props.data.key,
       date:null,
       time:null,
-      name:null,
+      status:'已召开',
+      meeting:this.props.data.meeting,
       people:null,
       role:'部门例会',
   	  text:null
@@ -30,7 +31,7 @@ export default class WriteOnlyMeeting extends Component {
   }
   setName(ev) {
     this.setState({
-      name:ev.target.value
+      meeting:ev.target.value
     })
   }
   setDate(date,dateString) {
@@ -50,22 +51,29 @@ export default class WriteOnlyMeeting extends Component {
   }
   //更新table
   submit() {
-    console.log(this.state);
-    this.props.dispatch({
-      type:'meeting/updateContent',
-      payload:{
-        data:this.state
+    let states = this.state;
+    let val = true;
+    for ( let x in states) {
+      if (states[x] == null) {
+        message.error('填写的内容不能为空');
+        val = false;
+        break;
       }
-    });
-    this.props.dispatch({
-      type:'meeting/updateList',
-      payload:{
-        key:this.state.key
-      }
-    })
+    }
+    if (val) {
+      this.props.dispatch({
+        type:'meeting/updateList',
+        payload:{
+          meeting:this.state
+        }
+      });
+      message.success("保存成功");
+      setTimeout(function () {
+        this.props.closeTable();
+      }.bind(this),500);
+    }
   }
   reset() {
-    console.log(this.props);
     this.props.closeTable();
   }
   render() {
@@ -100,9 +108,13 @@ export default class WriteOnlyMeeting extends Component {
         <Button type="primary" onClick={this.submit}>
         保存
         </Button>
-        <Button type="primary" onClick={this.reset}>
-        取消
-        </Button>
+        <div style={{float:'right'}}>
+          <Popconfirm title="你确定放弃编辑会议内容吗?" onConfirm={this.reset}>
+            <Button type="primary">
+            取消
+            </Button>
+          </Popconfirm>
+        </div>
       </div>
   	)
   }

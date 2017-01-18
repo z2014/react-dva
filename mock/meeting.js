@@ -1,11 +1,10 @@
 'use strict';
-
 const qs = require('qs');
 const mockjs = require('mockjs');
 const data1 = mockjs.mock({
-  'data|10': [{
+  'data|20': [{
     'key|+1': 1,
-    'time|1': [
+    'date|1': [
       '2017/1/1',
       '2016/11/20'
     ],
@@ -25,13 +24,21 @@ const data1 = mockjs.mock({
   }
 });
 module.exports = {
-  'GET/api/meeting' (req, res) {
+  'GET /api/meeting' (req, res) {
     setTimeout(function () {
       res.json({
         success: true,
-        data:data1.data
+        data:data1.data, 
         page: data1.page
       });
     }, 500);
-  } 
+  },
+
+  'PUT /api/meeting' (req,res) {
+    setTimeout(function () {
+      res.json({
+        stat: 'success'
+      })
+    }, 500);
+  }
 };
