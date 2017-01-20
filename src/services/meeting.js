@@ -11,3 +11,11 @@ export async function updateMeeting (params) {
   	body: qs.stringify(params)
   })
 }
+export async function addMeeting (params) {
+  return request('/api/meeting',{
+  	method:'put',
+  	mode:'cors',
+  	credentials:'include',
+  	body:qs.stringify(params)
+  })
+}

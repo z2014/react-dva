@@ -1,4 +1,4 @@
-import { queryMeeting,updateMeeting } from '../services/meeting';
+import { queryMeeting,updateMeeting,addMeeting } from '../services/meeting';
 import { parse } from 'qs';
 
 export default {
@@ -45,7 +45,7 @@ export default {
     },
 
     *updateList({ payload },{ call , put }) {
-      const { data } = yield call(updateMeeting);
+      const { data } = yield call(updateMeeting,parse(payload));
       if (data.stat == 'success') {
         yield put({
           type: 'updateSuccess',
@@ -56,11 +56,26 @@ export default {
           type: 'updateFailure'
         })
       }
+    },
+
+    *createMeeting({ payload },{ call , put }) {
+      const { data } = yield call(addMeeting,parse(payload));
+      if (data.stat == 'success') {
+        yield put({
+          type: 'addSuccess',
+          payload: payload
+        })
+      }else {
+        yield put({
+          type: 'queryFailure'
+        })
+      }
     }
   },
   reducers: {
     querySuccess(state, action) {
       action.payload.shouldUpdate = true;
+      console.log(action.payload.data);
       return { ...state, ...action.payload };
     },
 
@@ -73,7 +88,6 @@ export default {
 
     updateSuccess(state , action) {
       const meetingContent = action.payload;
-      console.log(meetingContent);
       const data = state.data.map(item => {
         if (item.key == action.payload.meeting.key) {
           return { ...item, ...action.payload.meeting }
@@ -85,6 +99,19 @@ export default {
         shouldUpdate:true
       };
       return { ...state, ...param }
+    },
+
+
+    addSuccess(state , action) {
+      const data = action.payload;
+      let oldData = state.data;
+      oldData.splice(0,0,data);
+      const param = {
+        data:oldData,
+        shouldUpdate:true
+      };
+      console.log(param.data);
+      return { ...state, ...param}
     }
   }
 

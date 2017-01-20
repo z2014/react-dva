@@ -7,6 +7,7 @@ export default class BuildMeeting extends Component {
   constructor(props) {
   	super(props);
   	this.state = {
+  	  key:21,
   	  date:null,
   	  time:null,
   	  meeting:null,
@@ -52,6 +53,7 @@ export default class BuildMeeting extends Component {
 	  setTimeout(function () {
 	  	message.success('会议发起成功');
 	  	this.setState({
+	  	  key:21,
 	  	  date:null,
 	  	  time:null,
 	  	  meeting:null,
@@ -60,7 +62,7 @@ export default class BuildMeeting extends Component {
 	  	})
 	  }.bind(this),500)
   	}else {
-  	  message.error('上面内容不能为空');
+  	  message.error('填写内容不能为空');
   	}
   }
   render() {

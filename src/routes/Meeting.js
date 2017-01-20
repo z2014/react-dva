@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'dva';
 import { message } from 'antd';
 import Layout from '../components/Common/Layout.js';
-import TabPage from '../components/TabPage.js';
+import TabPage from '../components/Common/TabPage.js';
 import MeetingPanel from '../components/meeting/MeetingPanel.js';
 import BuildMeeting from '../components/meeting/BuildMeeting.js';
 
@@ -14,15 +14,14 @@ class Meeting extends Component {
       currentNav:2
     }
   }
-  handlechange = (key) => {
-    console.log(key);
-  	if (key == 'todo') {
-      console.log('hah');
-  	  this.props.dispatch({
-  		  type:'meeting/fetchTodo'
-  	  })
-  	}
-  }
+  // handlechange = (key) => {
+  // 	if (key == 'done') {
+  // 	  this.props.dispatch({
+  // 		  type:'meeting/fetchAllMeeting',
+  //       payload:{}
+  // 	  })
+  // 	}
+  // }
   shouldComponentUpdate(nextProps) {
     if (nextProps.meeting.message.type == 'error') {
       message.error(nextProps.meeting.message.msg, 3);
@@ -53,7 +52,7 @@ class Meeting extends Component {
   	];
     return (
       <Layout currentNav={this.props.meeting.currentNav}>
-        <TabPage items={tabItems} defaultActiveKey={'done'} onchange={this.handlechange}/>
+        <TabPage items={tabItems} defaultActiveKey={'done'} onChange={this.handlechange}/>
       </Layout>)
   }
 }
