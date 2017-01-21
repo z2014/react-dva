@@ -14,23 +14,6 @@ class Meeting extends Component {
       currentNav:2
     }
   }
-  // handlechange = (key) => {
-  // 	if (key == 'done') {
-  // 	  this.props.dispatch({
-  // 		  type:'meeting/fetchAllMeeting',
-  //       payload:{}
-  // 	  })
-  // 	}
-  // }
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.meeting.message.type == 'error') {
-      message.error(nextProps.meeting.message.msg, 3);
-    }
-    if (nextProps.meeting.shouldUpdate) {
-      return true;
-    }
-    return false;
-  }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -38,18 +21,27 @@ class Meeting extends Component {
     });
   }
   render() {
-  	const tabItems = [
+    const { user } = OAglobal;
+  	const tabItems1 = [
       {
       	text:'我的会议',
       	key:'done',
       	content:<MeetingPanel data={this.state.meeting} dispatch={this.props.dispatch}/>
       },
       {
-      	text:'发起会议',
-      	key:'todo',
-      	content:<BuildMeeting dispatch={this.props.dispatch}/>
+        text:'发起会议',
+        key:'todo',
+        content:<BuildMeeting dispatch={this.props.dispatch} data={this.props.meeting}/>
       }
   	];
+    const tabItems2 = [
+      {
+        text:'我的会议',
+        key:'done',
+        content:<MeetingPanel data={this.state.meeting} dispatch={this.props.dispatch}/>
+      }
+    ];
+    const tabItems = user.role > 1 ? tabItems1:tabItems2;
     return (
       <Layout currentNav={this.props.meeting.currentNav}>
         <TabPage items={tabItems} defaultActiveKey={'done'} onChange={this.handlechange}/>

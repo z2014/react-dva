@@ -40,8 +40,10 @@ export default class WriteOnlyMeeting extends Component {
     })
   }
   setText(ev) {
+    let text = ev.target.value;
+    let text2 = text.replace(/\s/g,'<br>');
   	this.setState({
-  	  text:ev.target.value
+  	  text:text2
   	})
   }
   setTime = (moment) => {
@@ -77,7 +79,6 @@ export default class WriteOnlyMeeting extends Component {
     this.props.closeTable();
   }
   render() {
-  	// var list = props.list;
   	return (
       <div className={styles.wrapper}>
         <div className={styles.div}>
@@ -103,7 +104,8 @@ export default class WriteOnlyMeeting extends Component {
         </div>
         <div className={styles.div}>
           <span className={styles.span}>会议内容</span>
-          <Input className={styles.input} type="textarea" rows={8} onBlur={(ev) => this.setText(ev)}/>
+          <Input className={styles.input} type="textarea" rows={8} 
+          onBlur={(ev) => this.setText(ev)} placeholder="每条记录之间用回车换行"/>
         </div>
         <Button type="primary" onClick={this.submit}>
         保存
@@ -118,4 +120,8 @@ export default class WriteOnlyMeeting extends Component {
       </div>
   	)
   }
+}
+
+WriteOnlyMeeting.PropTypes = {
+  text: PropTypes.string
 }

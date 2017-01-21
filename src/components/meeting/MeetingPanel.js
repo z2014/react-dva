@@ -2,7 +2,7 @@ import DataTable from '../member/DataTable.js';
 import WriteOnlyMeeting from './WriteOnlyMeeting.js';
 import ReadOnlyMeeting from './ReadOnlyMeeting.js';
 import React,{ Component,PropTypes } from 'react';
-import { Popconfirm } from 'antd';
+import { Popconfirm,message } from 'antd';
 class MeetingPanel extends Component {
   constructor(props) {
     super(props);
@@ -62,13 +62,19 @@ class MeetingPanel extends Component {
   editMeeting(record) {
     return () => {
       //保证页面上只显示一个table
-      if (!this.state.isVisibleWritten) {
-        this.setState({
-          isVisibleWritten:!this.state.isVisibleWritten,
-          isVisibleRead:false,
-          record:record
-        })
-      }
+      const { user } = OAglobal;
+      if (user.name !== record.owner) {
+        message.error('只有会议发起者才能编辑');
+        return;
+      }else {
+        if (!this.state.isVisibleWritten) {
+          this.setState({
+            isVisibleWritten:!this.state.isVisibleWritten,
+            isVisibleRead:false,
+            record:record
+          })
+        }
+      }    
     }
   }
   //查看table
