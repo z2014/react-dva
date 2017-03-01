@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'dva';
 import Layout from '../components/Common/Layout.js';
+import DashBoard from '../components/Index/DashBoard.js';
 
 class IndexPage extends Component {
   constructor(props) {
@@ -10,10 +11,14 @@ class IndexPage extends Component {
   render() {
     return (
       <Layout>
-        <h2>Hello</h2>
+        <DashBoard announce={this.props.global.announce} />
       </Layout>
     );
   }
 }
 
-export default  connect()(IndexPage);
+function mapStateToProps(global) {
+  return {...global};
+}
+
+export default connect(mapStateToProps)(IndexPage);

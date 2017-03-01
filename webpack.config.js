@@ -2,7 +2,6 @@ const webpack = require('atool-build/lib/webpack');
 
 module.exports = function(webpackConfig, env) {
   webpackConfig.babel.plugins.push('transform-runtime');
-
   // Support hmr
   if (env === 'development') {
     webpackConfig.devtool = '#eval';

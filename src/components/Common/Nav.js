@@ -14,19 +14,25 @@ export default class Nav extends Component {
   }
 
   render() {
-    const { avatar, items, currentNav } = this.props;
+    const { items, currentNav } = this.props;
     const menu_list = items.map((item, index) => {
       return (
-        <Menu.Item key={index}>
+        <Menu.Item key={item.key}>
           <Link to={'/' + item.link}>{item.text}</Link>
         </Menu.Item>
       );
     });
-
     return (
       <div className={commonStyles.leftpanel}>
         <div className={commonStyles.nav_avatar}>
-          <img style={{ height: "100%", borderRadius: "50%" }} src={avatar} />
+          {
+            // 姓名作头像
+            OAglobal.user.avatar == 'default'
+            ? <span className={commonStyles.nav_avatar_text}>
+                { OAglobal.user.name.length > 2 ? OAglobal.user.name.substr(-2, 2) : OAglobal.user.name }
+              </span>
+            : <img style={{ height: "100%", borderRadius: "50%" }} src={OAglobal.user.avatar} />
+          }
         </div>
         <Menu
           theme={'dark'}
@@ -44,6 +50,5 @@ export default class Nav extends Component {
 
 Nav.PropTypes = {
   items: PropTypes.array,
-  avatar: PropTypes.string,
   currentNav: PropTypes.string
 }

@@ -15,28 +15,100 @@
   // 全局变量,由服务端输出
   var OAglobal = {
     user: {
-      avatar: 'http://online.hfut.edu.cn/images/service/paint.png',
-      uid: 2013210154,
+      avatar: 'http://online.hfut.edu.cn/online_logo.png',
+      stuid: 201111111,
       name: '曹善敏',
       depart: 3,
       role: 3
     },
+    meetingRoles:[
+      {
+      key:1,value:'全员大会',text:'全员大会'
+    },{
+      key:2,value:'部门例会',text:'部门例会'
+    },{
+      key:3,value:'其他',text:'其他'
+    }
+    ],
+    currentPeriod: 11,
     navList: [
       {
+        key: '0',
         text: '首页',
         link: ''
       },
       {
+        key: 'member',
         text: '成员',
-        link: 'member'
+        link: 'member',
       },
       {
-        text:'会议',
-        link:'meeting'
+        key: 'report',
+        text: '汇报',
+        link: 'report'
+      },
+      {
+        key: 'meeting',
+        text: '会议',
+        link: 'meeting'
       }
     ],
-    memberStatus: ['未知', '正常', '离职', '黑名单'],
-    memberRole: ['成员', '部长', '行政', '总监/主管', '超级管理员'],
+    memberStatus: [
+      {
+        key: '0',
+        text: '未知',
+        value: '未知'
+      },
+      {
+        key: '1',
+        text: '正常',
+        value: '正常'
+      },
+      {
+        key: '2',
+        text: '离职',
+        value: '离职'
+      },
+      {
+        key: '3',
+        text: '黑名单',
+        value: '黑名单'
+      }
+    ],
+    memberRole: [
+      {
+        key: '0',
+        text: '成员',
+        value: '成员'
+      },
+      {
+        key: '1',
+        text: '部长',
+        value: '部长'
+      },
+      {
+        key: '2',
+        text: '行政',
+        value: '行政'
+      },
+      {
+        key: '3',
+        text: '总监/主管',
+        value: '总监/主管'
+      }
+    ],
+    campus: [
+      {
+        text: '屯溪路校区',
+        value: '屯溪路校区',
+        key: '0',
+      },
+      {
+        text: '翡翠湖校区',
+        value: '翡翠湖校区',
+        key: '0',
+      }
+    ],
     departs: [
       {
         text: '无部门',

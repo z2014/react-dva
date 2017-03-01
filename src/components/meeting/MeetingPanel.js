@@ -1,8 +1,12 @@
-import DataTable from '../member/DataTable.js';
+import DataTable from '../Common/DataTable.js';
 import WriteOnlyMeeting from './WriteOnlyMeeting.js';
 import ReadOnlyMeeting from './ReadOnlyMeeting.js';
+import MeetingEdit from './MeetingEdit.js';
 import React,{ Component,PropTypes } from 'react';
 import { Popconfirm,message } from 'antd';
+import SelectCell from '../Common/SelectCell.js';
+import MeetingFilter from '../meeting/MeetingFilter.js';
+
 class MeetingPanel extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +20,7 @@ class MeetingPanel extends Component {
       {
         title:'日期',
         dataIndex:'date',
-        key:'time'
+        key:'date'
       },
       {
         title:'会议',
@@ -50,7 +54,7 @@ class MeetingPanel extends Component {
         key:'operate',
         render:(text,record,index) => {
           return (
-            <Edit record={record} editMeeting={this.editMeeting} seeMeeting={this.seeMeeting}/>
+            <MeetingEdit record={record} editMeeting={this.editMeeting} seeMeeting={this.seeMeeting}/>
           )
         }
       }
@@ -60,83 +64,46 @@ class MeetingPanel extends Component {
   }
   //编辑table
   editMeeting(record) {
-    return () => {
-      //保证页面上只显示一个table
       const { user } = OAglobal;
       if (user.name !== record.owner) {
         message.error('只有会议发起者才能编辑');
         return;
       }else {
-        if (!this.state.isVisibleWritten) {
-          this.setState({
-            isVisibleWritten:!this.state.isVisibleWritten,
-            isVisibleRead:false,
-            record:record
-          })
-        }
-      }    
-    }
+        this.props.showPullScreen({
+          content:<WriteOnlyMeeting data={record} dispatch={this.props.dispatch} 
+                        closePullScreen={this.props.closePullScreen}/>
+        })
+      }
   }
   //查看table
   seeMeeting(record) {
-    return () => {
-      this.setState({
-        record:record
-      });
-      //保证页面上只显示一个table
-      if (!this.state.isVisibleRead) {
-        this.setState({
-          isVisibleWritten:false,
-          isVisibleRead:!this.state.isVisibleRead,
-          record:record
-        })
-      }
-    }
-  }
-  closeTable() {
-    this.setState({
-      isVisibleRead:false,
-      isVisibleWritten:false
+    this.props.showPullScreen({
+      content: <ReadOnlyMeeting data={record}/>
     })
   }
+
+  closeTable() {
+    this.props.closePullScreen();
+  }
+
+  handleSearch = (param) => {
+    this.props.dispatch({
+      type:'meeting/fetchAllMeeting',
+      payload:param
+    })
+  }
+
   render() {
   	let data = this.props.data;
     const columns = this.columns;
-    //测试数据
-    const text = {
-      key:1,
-      date:2016/11/20,
-      time:'9:30',
-      name:'第一次全员大会',
-      people:'张春林',
-      role:'部门例会',
-      text:'啊哈哈哈哈哈'
-    };
   	return (
       <div>
-        <DataTable pagesize={5} columns={columns} dataSource={data} 
-        style={{width:'50%',display:'inline-block',marginRight:20}}/>
-        {
-          this.state.isVisibleWritten
-            &&
-          <WriteOnlyMeeting data={this.state.record} closeTable={this.closeTable} 
-          dispatch={this.props.dispatch}/>
-        }
-        {
-          this.state.isVisibleRead
-            &&
-          <ReadOnlyMeeting data={this.state.record} closeTable={this.closeTable}/>
-        }
+        <MeetingFilter handleSearch={this.handleSearch}/>
+        <DataTable pagesize={5} columns={columns} dataSource={data}
+        style={{width:'100%',height:'100%',display:'inline-block',marginRight:20}}/>
       </div>
   	)
   }
 }
-function Edit(props){
-  const record = props.record;
-  if (record.status == '已召开') {
-    return  <a onClick={props.seeMeeting(record)}>查看内容</a>
-  }else{
-    return  <a onClick={props.editMeeting(record)}>编辑内容</a>
-  }
-}
+
 export default MeetingPanel;

@@ -15,7 +15,7 @@ export default class TabPage extends Component {
 
   renderItem(item) {
     return (
-      <TabPane tab={item.text} key={item.key}>
+      <TabPane style={{height: '100%'}} tab={item.text} key={item.key}>
         {item.content}
       </TabPane>
     );
@@ -28,7 +28,7 @@ export default class TabPage extends Component {
       return this.renderItem(item);
     });
     return(
-      <Tabs defaultActiveKey={defaultActiveKey ? defaultActiveKey : '0'} onChange={onChange}>
+      <Tabs style={{height: '100%'}} defaultActiveKey={defaultActiveKey ? defaultActiveKey : '0'} onChange={onChange}>
         {list}
       </Tabs>
     );

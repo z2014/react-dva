@@ -3,7 +3,7 @@
   z-index: 1001;
   bottom: 0px;
   background-color: #fff;
-  box-shadow: -3px 0 11px rgba(0,0,0,.2);
+  box-shadow: 0px 0 15px rgba(0,0,0,.2);
   -webkit-transition: all 0.3s linear;
   -moz-transition: all 0.3s linear;
   -ms-transition: all 0.3s linear;
@@ -12,36 +12,49 @@
 }
 
 .pullscreen_action {
+  position: relative;
   padding: 0px;
-  height: 40px;
-  background-color: rgb(236, 236, 236);
-  box-shadow: 0px 0px 2px #a9a9a9;
+  height: 54px;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 .pullscreen_action_close {
+  position: absolute;
   display: inline-block;
   padding: 0px;
-  margin-left: 8px;
-  width: 40px;
-  height: 100%;
-  line-height: 40px;
-  color: #c9c9c9;
+  right: 8px;
+  top: 8px;
+  width: 54px;
+  height: 38px;
+  line-height: 38px;
+  color: rgb(232, 232, 232);
   font-size: 32px;
   cursor: pointer;
+  text-align: center;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  transition: 0.5s all;
 }
 
+.pullscreen_action_close:hover {
+  background: rgb(242, 242, 242);
+  color: #2db7f5;
+  font-size: 20px;
+}
+
+
 .pullscreen_title {
-  float: right;
-  display: inline-block;
-  padding-right: 20px;
+  display: block;
+  padding: 0px 54px 0px 20px;
   height: 100%;
-  line-height: 40px;
+  line-height: 54px;
   font-size: 18px;
+  /*text-align: center;*/
 }
 
 .pullscreen_container {
   padding: 2px;
-  height: ~"-webkit-calc(100% - 40px)";
-  height: ~"-moz-calc(100% - 40px)";
-  height: ~"calc(100% - 40px)";
+  height: ~"-webkit-calc(100% - 54px)";
+  height: ~"-moz-calc(100% - 54px)";
+  height: ~"calc(100% - 54px)";
 }

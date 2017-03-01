@@ -10,7 +10,7 @@ export default class ReadOnlyMeeting extends Component {
       <div className={styles.wrapper}>
         <div className={styles.div}>
           <span className={styles.span}>会议时间</span>
-          <div style={inline}>{`${this.props.data.date}    ${this.props.data.time}`}</div>
+          <div style={inline}>{this.props.data.date}</div>
         </div>
         <div className={styles.div}>
           <span className={styles.span}>会议名称</span>

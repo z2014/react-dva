@@ -9,17 +9,19 @@ export default {
       type: '',
       msg: ''
     },
-    currentNav: '2',
+    currentNav: 'meeting',
     data: []
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
+    setup({ dispatch, history ,payload }) {
       history.listen(location => {
         if (location.pathname === '/meeting') {
           dispatch({
             type: 'fetchAllMeeting',
-            payload: {}
+            payload: {
+              depart:OAglobal.user.depart
+            }
           });
         }
       });
@@ -29,7 +31,7 @@ export default {
   effects: {
     // 获取所有会议信息
     *fetchAllMeeting({ payload }, { call, put }) {
-      const { data } = yield call(queryMeeting);
+      const { data } = yield call(queryMeeting,parse(payload));
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -51,7 +53,7 @@ export default {
           type: 'updateSuccess',
           payload: payload
         })
-      }else {
+      } else {
         yield put({
           type: 'updateFailure'
         })
@@ -70,12 +72,11 @@ export default {
           type: 'queryFailure'
         })
       }
-    }
+    },
   },
   reducers: {
     querySuccess(state, action) {
       action.payload.shouldUpdate = true;
-      console.log(action.payload.data);
       return { ...state, ...action.payload };
     },
 
@@ -88,8 +89,9 @@ export default {
 
     updateSuccess(state , action) {
       const meetingContent = action.payload;
+      console.log('meetingContent',meetingContent);
       const data = state.data.map(item => {
-        if (item.key == action.payload.meeting.key) {
+        if (item.id == action.payload.meeting.id) {
           return { ...item, ...action.payload.meeting }
         }
         return item;
@@ -105,12 +107,11 @@ export default {
     addSuccess(state , action) {
       const data = action.payload;
       let oldData = state.data;
-      oldData.splice(0,0,data);
+      oldData.unshift(data);
       const param = {
         data:oldData,
         shouldUpdate:true
       };
-      console.log(param.data);
       return { ...state, ...param}
     }
   }

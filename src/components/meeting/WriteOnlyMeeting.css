@@ -5,14 +5,13 @@
 	margin-right: 20px;
 }
 .wrapper{
-	width:45%;
+	width:100%;
 	display:inline-block;
 	padding: 20px;
-	box-shadow: 0 0 6px 3px #ccc;
 	vertical-align: top;
 }
 .div{
-	padding: 5px;
+	padding: 10px;
 }
 .input{
 	width: 400px;

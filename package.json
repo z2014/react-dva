@@ -5,15 +5,13 @@
   },
   "dependencies": {
     "antd": "^2.1.0",
-    "ants": "0.0.3-alpha",
     "babel-plugin-import": "^1.0.1",
     "dva": "^1.1.0",
+    "md5": "^2.2.1",
     "moment": "^2.17.1",
-    "moment-timezone": "^0.5.11",
     "react": "^15.1.0",
-    "react-custom-scrollbars": "^4.0.1",
-    "react-dom": "^15.1.0",
-    "react-router": "^3.0.2"
+    "react-custom-scrollbars": "^4.0.2",
+    "react-dom": "^15.1.0"
   },
   "devDependencies": {
     "atool-build": "^0.8.0",
@@ -32,7 +30,7 @@
     "redbox-react": "^1.2.10"
   },
   "scripts": {
-    "start": "dora --plugins \"proxy?port=6001&watchDirs=./mock,webpack,webpack-hmr\"",
+    "start": "dora --plugins \"proxy?port=3001&watchDirs=./mock,webpack,webpack-hmr\"",
     "build": "atool-build",
     "test": "atool-test-mocha ./src/**/*-test.js"
   }

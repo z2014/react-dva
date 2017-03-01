@@ -22,11 +22,25 @@ export default class PullScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.isShow) {
+      // 监听点击事件，点击推屏以外区域时收起推屏
+      document.getElementById('root').addEventListener('click', this.handleClick);
+    } else {
+      // 收起推屏时取消事件监听
+      document.getElementById('root').removeEventListener('click', this.handleClick);
+    }
     this.setState({
       isShow: nextProps.isShow,
       title: nextProps.title,
       content: nextProps.content
     });
+  }
+
+  handleClick = (e) => {
+    // 点击推屏以外区域收起推屏
+    if (this.refs.fullscreen_wrap && !this.refs.fullscreen_wrap.contains(e.target)) {
+      this.close();
+    }
   }
 
   close = () => {
@@ -42,10 +56,10 @@ export default class PullScreen extends Component {
     const { title, content, isShow } = this.state;
     const right = isShow ? '0px' : '-' + this.props.width;
     return(
-      <div className={style.pullscreen_wrap} style={{right: right, width: this.props.width, height: this.props.height}}>
+      <div ref="fullscreen_wrap" className={style.pullscreen_wrap} style={{right: right, width: this.props.width, height: this.props.height}}>
         <div className={style.pullscreen_action} >
-          <span className={style.pullscreen_action_close} >
-            <Icon onClick={this.close} type="close-square" />
+          <span onClick={this.close} className={style.pullscreen_action_close} >
+            <Icon type="close" />
           </span>
           <span className={style.pullscreen_title}>
             {this.props.title}

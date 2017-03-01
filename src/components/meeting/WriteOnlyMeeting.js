@@ -7,56 +7,58 @@ export default class WriteOnlyMeeting extends Component {
   constructor(props) {
   	super(props);
   	this.state = {
-      key:this.props.data.key,
-      date:null,
-      time:null,
-      status:'已召开',
-      meeting:this.props.data.meeting,
-      people:null,
-      role:'部门例会',
-  	  text:null
+      infor:{
+        id:this.props.data.id,
+        date:null,
+        status:'已召开',
+        meeting:this.props.data.meeting,
+        people:null,
+        role:'部门例会',
+        text:null
+      },
+      show:false
   	};
   	this.submit = this.submit.bind(this);
-    this.reset = this.reset.bind(this);
   }
   setRole(value) {
-    this.setState({
-      role:value
-    })
+    const { infor } = this.state;
+    infor.role = value;
   }
   setPeople(ev) {
-    this.setState({
-      people:ev.target.value
-    })
+    const { infor } = this.state;
+    infor.people = ev.target.value
   }
   setName(ev) {
-    this.setState({
-      meeting:ev.target.value
-    })
+    const { infor } = this.state;
+    infor.meeting = ev.target.value;
   }
   setDate(date,dateString) {
+    const { infor } = this.state;
+    infor.date = dateString;
     this.setState({
-      date:dateString
+      show:true
     })
   }
   setText(ev) {
     let text = ev.target.value;
     let text2 = text.replace(/\s/g,'<br>');
-  	this.setState({
-  	  text:text2
-  	})
+  	const { infor } = this.state;
+    infor.text = text2;
   }
-  setTime = (moment) => {
-    this.setState({
-      time:moment.format('LT')
-    })
+  setTime = (time,timeString) => {
+    if (this.state.infor.date != null) {
+      const { infor } = this.state;
+      infor.date = this.state.infor.date + ' ' + timeString;
+    }else{
+      message.error('请先选择日期');
+    }
   }
   //更新table
   submit() {
-    let states = this.state;
+    let { infor } = this.state;
     let val = true;
-    for ( let x in states) {
-      if (states[x] == null) {
+    for ( let x in infor) {
+      if (infor[x] == null) {
         message.error('填写的内容不能为空');
         val = false;
         break;
@@ -66,17 +68,14 @@ export default class WriteOnlyMeeting extends Component {
       this.props.dispatch({
         type:'meeting/updateList',
         payload:{
-          meeting:this.state
+          meeting:infor
         }
       });
       message.success("保存成功");
       setTimeout(function () {
-        this.props.closeTable();
+        this.props.closePullScreen();
       }.bind(this),500);
     }
-  }
-  reset() {
-    this.props.closeTable();
   }
   render() {
   	return (
@@ -84,7 +83,7 @@ export default class WriteOnlyMeeting extends Component {
         <div className={styles.div}>
           <span className={styles.span}>会议时间</span>
           <DatePicker onChange={(date,dateString) => this.setDate(date,dateString)}/>
-          <TimePicker onChange={this.setTime}/>
+          {this.state.show && <TimePicker onChange={this.setTime}/>}
         </div>
         <div className={styles.div}>
           <span className={styles.span}>会议名称</span>
@@ -110,13 +109,6 @@ export default class WriteOnlyMeeting extends Component {
         <Button type="primary" onClick={this.submit}>
         保存
         </Button>
-        <div style={{float:'right'}}>
-          <Popconfirm title="你确定放弃编辑会议内容吗?" onConfirm={this.reset}>
-            <Button type="primary">
-            取消
-            </Button>
-          </Popconfirm>
-        </div>
       </div>
   	)
   }

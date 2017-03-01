@@ -9,8 +9,10 @@ const app = dva();
 //app.use({});
 
 // 3. Model
-// app.model(require('./models/global'));
+app.model(require('./models/global'));
 app.model(require('./models/member'));
+app.model(require('./models/recruit'));
+app.model(require('./models/report'));
 app.model(require('./models/meeting'));
 
 // 4. Router

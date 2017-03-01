@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'dva';
 import Nav from './Nav.js';
 import commonStyles from './common.less';
 
 // 通用布局组件
-function Layout({location, dispatch, currentNav, children}) {
+function Layout({currentNav, children}) {
   const { navList, user } = OAglobal;
   return (
     <div className={commonStyles.wrap}>
@@ -16,4 +15,4 @@ function Layout({location, dispatch, currentNav, children}) {
   );
 }
 
-export default connect()(Layout);
+export default Layout;
